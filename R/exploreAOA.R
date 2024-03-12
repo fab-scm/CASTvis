@@ -81,48 +81,48 @@ exploreAOA <- function(aoa) {
   }
 
 
-  # calculate data plots _______________________________________________________
-  message("Generating plots...")
-  plots1 <- c()
-
-  plots1$AOA$plot <- generatePlot1(rasterImages$AOA, "AOA")
-  plots1$AOA$title <- "AOA histogram"
-  plots1$AOA$description <- "The AOA histogram shows the distribution of the AOA values. The AOA values are either 0 (outside AOA) or 1 (inside AOA)."
-
-  plots1$DI$plot <- generatePlot1(rasterImages$DI, "DI")
-  plots1$DI$title <- "DI density plot"
-  plots1$DI$description <- "The DI density plot shows the distribution of the DI values."
-
-  if (LPD_available) {
-    plots1$LPD$plot <- generatePlot1(rasterImages$LPD, "LPD")
-    plots1$LPD$title <- "LPD histogram"
-    plots1$LPD$description <- "The LPD histogram shows the distribution of the LPD values. The LPD values are the number of training data points for which the DI is smaller than the threshold."
-
-    plots1$AOA_LPD$plot <- generatePlot1(rasterImages$LPD, "AOA_LPD", 1) #init with k = 1
-    plots1$AOA_LPD$title <- "LPD histogram (AOA colored)"
-    plots1$AOA_LPD$description <- "The LPD (AOA colored) histogram shows the distribution of the LPD values."
-  }
-
-
-  plots2 <- c()
-
-  plots2$AOA$plot <- generatePlot2(parameters$trainDI, "AOA", thres = parameters$threshold)
-  plots2$AOA$title <- "trainDI boxplot"
-  plots2$AOA$description <- "The trainDI boxplot shows the distribution of the trainDI values."
-
-  plots2$DI$plot <- ggplotly(plot(aoa)[[1]]) %>% layout(legend = list(bgcolor = "rgba(0,0,0,0)", x = 0.95, xanchor = "right", y = 1, yanchor = "top")) %>% config(displayModeBar = FALSE)
-  plots2$DI$title <- "trainDI, predictionDI density plot"
-  plots2$DI$description <- "The trainDI, predictionDI density plot shows the distribution of the trainDI and predictionDI values."
-
-  if (LPD_available) {
-    plots2$LPD$plot <- generatePlot2(rasterImages, "LPD", thres = parameters$threshold)
-    plots2$LPD$title <- "LPD~DI plot (binned)"
-    plots2$LPD$description <- "The LPD~DI plot (binned) shows the distribution of the LPD values for each DI value."
-
-    plots2$AOA_LPD$plot <- generatePlot2(rasterImages$LPD, "AOA_LPD", 1) #init with k = 1
-    plots2$AOA_LPD$title <- "AOA (LPD-dependent) histogram"
-    plots2$AOA_LPD$description <- "The AOA (LPD-dependent) histogram shows the distribution of the AOA (LPD-dependent) values. The AOA (LPD-dependent) values are either 0 (outside AOA) or 1 (inside AOA)."
-  }
+  # # calculate data plots _______________________________________________________
+  # message("Generating plots...")
+  # plots1 <- c()
+  #
+  # plots1$AOA$plot <- generatePlot1(rasterImages$AOA, "AOA")
+  # plots1$AOA$title <- "AOA histogram"
+  # plots1$AOA$description <- "The AOA histogram shows the distribution of the AOA values. The AOA values are either 0 (outside AOA) or 1 (inside AOA)."
+  #
+  # plots1$DI$plot <- generatePlot1(rasterImages$DI, "DI")
+  # plots1$DI$title <- "DI density plot"
+  # plots1$DI$description <- "The DI density plot shows the distribution of the DI values."
+  #
+  # if (LPD_available) {
+  #   plots1$LPD$plot <- generatePlot1(rasterImages$LPD, "LPD")
+  #   plots1$LPD$title <- "LPD histogram"
+  #   plots1$LPD$description <- "The LPD histogram shows the distribution of the LPD values. The LPD values are the number of training data points for which the DI is smaller than the threshold."
+  #
+  #   plots1$AOA_LPD$plot <- generatePlot1(rasterImages$LPD, "AOA_LPD", 1) #init with k = 1
+  #   plots1$AOA_LPD$title <- "LPD histogram (AOA colored)"
+  #   plots1$AOA_LPD$description <- "The LPD (AOA colored) histogram shows the distribution of the LPD values."
+  # }
+  #
+  #
+  # plots2 <- c()
+  #
+  # plots2$AOA$plot <- generatePlot2(parameters$trainDI, "AOA", thres = parameters$threshold)
+  # plots2$AOA$title <- "trainDI boxplot"
+  # plots2$AOA$description <- "The trainDI boxplot shows the distribution of the trainDI values."
+  #
+  # plots2$DI$plot <- ggplotly(plot(aoa)[[1]]) %>% layout(legend = list(bgcolor = "rgba(0,0,0,0)", x = 0.95, xanchor = "right", y = 1, yanchor = "top")) %>% config(displayModeBar = FALSE)
+  # plots2$DI$title <- "trainDI, predictionDI density plot"
+  # plots2$DI$description <- "The trainDI, predictionDI density plot shows the distribution of the trainDI and predictionDI values."
+  #
+  # if (LPD_available) {
+  #   plots2$LPD$plot <- generatePlot2(rasterImages, "LPD", thres = parameters$threshold)
+  #   plots2$LPD$title <- "LPD~DI plot (binned)"
+  #   plots2$LPD$description <- "The LPD~DI plot (binned) shows the distribution of the LPD values for each DI value."
+  #
+  #   plots2$AOA_LPD$plot <- generatePlot2(rasterImages$LPD, "AOA_LPD", 1) #init with k = 1
+  #   plots2$AOA_LPD$title <- "AOA (LPD-dependent) histogram"
+  #   plots2$AOA_LPD$description <- "The AOA (LPD-dependent) histogram shows the distribution of the AOA (LPD-dependent) values. The AOA (LPD-dependent) values are either 0 (outside AOA) or 1 (inside AOA)."
+  # }
 
 
   # define legend props for the AOA, DI and LPD ________________________________
@@ -312,18 +312,18 @@ exploreAOA <- function(aoa) {
           sidebar = sidebar(
             position = "right",
             width = 500,
-            card(
-              height = 380,
-              full_screen = TRUE,
-              card_header(textOutput("plot1title"), tooltip(bsicons::bs_icon("question-circle"), textOutput("plot1description"), placement = "right"), class = "d-flex align-items-center gap-1"),
-              card_body(plotlyOutput("plot1"), proxy.height = 380)
-            ),
-            card(
-              height = 380,
-              full_screen = TRUE,
-              card_header(textOutput("plot2title"), tooltip(bsicons::bs_icon("question-circle"), textOutput("plot2description"), placement = "right"), class = "d-flex align-items-center gap-1"),
-              card_body(plotlyOutput("plot2"), proxy.height = 380)
-            )
+            # card(
+            #   height = 380,
+            #   full_screen = TRUE,
+            #   card_header(textOutput("plot1title"), tooltip(bsicons::bs_icon("question-circle"), textOutput("plot1description"), placement = "right"), class = "d-flex align-items-center gap-1"),
+            #   card_body(plotlyOutput("plot1"), proxy.height = 380)
+            # ),
+            # card(
+            #   height = 380,
+            #   full_screen = TRUE,
+            #   card_header(textOutput("plot2title"), tooltip(bsicons::bs_icon("question-circle"), textOutput("plot2description"), placement = "right"), class = "d-flex align-items-center gap-1"),
+            #   card_body(plotlyOutput("plot2"), proxy.height = 380)
+            # )
           ),
           class = "p-0 gap-0",
           leafletOutput(outputId = "map",
@@ -685,66 +685,66 @@ exploreAOA <- function(aoa) {
 
 
 
-generatePlot1 <- function(raster, layer, k = NULL) {
-  if (layer == "AOA") {
-    dfAOA = data.frame(AOA = as.integer(terra::values(raster, na.rm = T)))
-    plot = ggplot(dfAOA, aes(x = factor(AOA), fill = factor(after_stat(x)))) +
-      geom_bar(show.legend = FALSE) +
-      geom_text(
-        aes(label=paste(after_stat(round(prop*100, 2)), " %"), group=1),
-        stat='count',
-        nudge_y=8000,
-        show.legend = FALSE
-      ) +
-      scale_fill_manual(values = c("#fdb138", "#025196"))
-    plot = plot + xlab("AOA")
-    plot = hide_legend(ggplotly(plot, tooltip = c("count", "AOA")) %>% config(displayModeBar = FALSE))
-  } else if (layer == "DI") {
-    dfDI = data.frame(DI = as.numeric(terra::values(raster, na.rm = T)))
-    density <- density(dfDI$DI, n = 1024, adjust = 1.5)
-    plot = ggplot(data.frame(DI = density$x, density = density$y), aes(DI, density)) + geom_line() +
-      geom_segment(aes(xend = DI, yend = 0, colour = DI), show.legend = FALSE) +
-      scale_color_viridis()
-    plot = ggplotly(plot, tooltip = c("x", "y")) %>% config(displayModeBar = FALSE)
-  } else if (layer == "LPD") {
-    dfLPD = data.frame(LPD = as.integer(terra::values(raster , na.rm = T)))
-    plot = ggplot(dfLPD, aes(x = LPD, fill = after_stat(x))) + geom_bar(show.legend = FALSE) + scale_fill_viridis()
-    plot = ggplotly(plot, tooltip = c("count", "LPD")) %>% config(displayModeBar = FALSE)
-  } else if (layer == "AOA_LPD") {
-    dfAOA_LPD = data.frame(LPD = as.integer(terra::values(raster , na.rm = T)))
-    dfAOA_LPD <- dfAOA_LPD %>% mutate(AOA = ifelse(LPD < k, 0, 1))
-    plot = ggplot(dfAOA_LPD, aes(x = LPD, fill = factor(AOA))) + geom_bar(show.legend = FALSE) + scale_fill_manual(values = c("#fdb138", "#025196"))
-    plot = hide_legend(ggplotly(plot, tooltip = c("count", "LPD")) %>% config(displayModeBar = FALSE))
-  }
-  return(plot)
-}
+# generatePlot1 <- function(raster, layer, k = NULL) {
+#   if (layer == "AOA") {
+#     dfAOA = data.frame(AOA = as.integer(terra::values(raster, na.rm = T)))
+#     plot = ggplot(dfAOA, aes(x = factor(AOA), fill = factor(after_stat(x)))) +
+#       geom_bar(show.legend = FALSE) +
+#       geom_text(
+#         aes(label=paste(after_stat(round(prop*100, 2)), " %"), group=1),
+#         stat='count',
+#         nudge_y=8000,
+#         show.legend = FALSE
+#       ) +
+#       scale_fill_manual(values = c("#fdb138", "#025196"))
+#     plot = plot + xlab("AOA")
+#     plot = hide_legend(ggplotly(plot, tooltip = c("count", "AOA")) %>% config(displayModeBar = FALSE))
+#   } else if (layer == "DI") {
+#     dfDI = data.frame(DI = as.numeric(terra::values(raster, na.rm = T)))
+#     density <- density(dfDI$DI, n = 1024, adjust = 1.5)
+#     plot = ggplot(data.frame(DI = density$x, density = density$y), aes(DI, density)) + geom_line() +
+#       geom_segment(aes(xend = DI, yend = 0, colour = DI), show.legend = FALSE) +
+#       scale_color_viridis()
+#     plot = ggplotly(plot, tooltip = c("x", "y")) %>% config(displayModeBar = FALSE)
+#   } else if (layer == "LPD") {
+#     dfLPD = data.frame(LPD = as.integer(terra::values(raster , na.rm = T)))
+#     plot = ggplot(dfLPD, aes(x = LPD, fill = after_stat(x))) + geom_bar(show.legend = FALSE) + scale_fill_viridis()
+#     plot = ggplotly(plot, tooltip = c("count", "LPD")) %>% config(displayModeBar = FALSE)
+#   } else if (layer == "AOA_LPD") {
+#     dfAOA_LPD = data.frame(LPD = as.integer(terra::values(raster , na.rm = T)))
+#     dfAOA_LPD <- dfAOA_LPD %>% mutate(AOA = ifelse(LPD < k, 0, 1))
+#     plot = ggplot(dfAOA_LPD, aes(x = LPD, fill = factor(AOA))) + geom_bar(show.legend = FALSE) + scale_fill_manual(values = c("#fdb138", "#025196"))
+#     plot = hide_legend(ggplotly(plot, tooltip = c("count", "LPD")) %>% config(displayModeBar = FALSE))
+#   }
+#   return(plot)
+# }
 
 
-generatePlot2 <- function(raster, layer, k = NULL, thres = NULL) {
-  if (layer == "AOA") {
-    dfTrainDI = data.frame(trainDI = as.numeric(raster, na.rm = T))
-    plot = ggplot(dfTrainDI, aes(x = "", y = trainDI)) + geom_boxplot(show.legend = FALSE, fill = "#69b3a2") + geom_hline(aes(yintercept = thres, linetype = "AOA_threshold")) + scale_linetype_manual(name = "", values = c(AOA_threshold = "dashed"))
-    plot = ggplotly(plot) %>% layout(legend = list(bgcolor = "rgba(0,0,0,0)", x = 0.95, xanchor = "right", y = 1, yanchor = "top")) %>% config(displayModeBar = FALSE)
-  } else if (layer == "DI") {
-    plot = NULL
-  } else if (layer == "LPD") {
-    df = data.frame(DI = as.numeric(terra::values(raster$DI, na.rm = T)), LPD = as.integer(terra::values(raster$LPD, na.rm = T)))
-    plot = ggplot(df, aes(x = LPD, y = DI)) + geom_bin_2d(breaks=list(x = seq(-0.5,max(df$LPD)+1,1), y = seq(0, ceiling(max(df$DI)), 0.01))) + scale_fill_viridis(option ="H") + geom_hline(aes(yintercept = thres, linetype = "AOA_threshold")) + scale_linetype_manual(name = "", values = c(AOA_threshold = "dashed"))
-    plot = ggplotly(plot) %>% layout(legend = list(bgcolor = "rgba(0,0,0,0)", x = 0.95, xanchor = "right", y = 1, yanchor = "top")) %>% config(displayModeBar = FALSE)
-  } else if (layer == "AOA_LPD") {
-    dfAOA_LPD = data.frame(LPD = as.integer(terra::values(raster , na.rm = T)))
-    dfAOA_LPD <- dfAOA_LPD %>% mutate(AOA = ifelse(LPD < k, 0, 1))
-    plot = ggplot(dfAOA_LPD, aes(x = factor(AOA), fill = factor(after_stat(x)))) +
-      geom_bar(show.legend = FALSE) +
-      geom_text(
-        aes(label=paste(after_stat(round(prop*100, 2)), " %"), group=1),
-        stat='count',
-        nudge_y=8000,
-        show.legend = FALSE
-      ) +
-      scale_fill_manual(values = c("#fdb138", "#025196"))
-    plot = plot + xlab("AOA")
-    plot = hide_legend(ggplotly(plot, tooltip = c("count", "AOA")) %>% config(displayModeBar = FALSE))
-  }
-  return(plot)
-}
+# generatePlot2 <- function(raster, layer, k = NULL, thres = NULL) {
+#   if (layer == "AOA") {
+#     dfTrainDI = data.frame(trainDI = as.numeric(raster, na.rm = T))
+#     plot = ggplot(dfTrainDI, aes(x = "", y = trainDI)) + geom_boxplot(show.legend = FALSE, fill = "#69b3a2") + geom_hline(aes(yintercept = thres, linetype = "AOA_threshold")) + scale_linetype_manual(name = "", values = c(AOA_threshold = "dashed"))
+#     plot = ggplotly(plot) %>% layout(legend = list(bgcolor = "rgba(0,0,0,0)", x = 0.95, xanchor = "right", y = 1, yanchor = "top")) %>% config(displayModeBar = FALSE)
+#   } else if (layer == "DI") {
+#     plot = NULL
+#   } else if (layer == "LPD") {
+#     df = data.frame(DI = as.numeric(terra::values(raster$DI, na.rm = T)), LPD = as.integer(terra::values(raster$LPD, na.rm = T)))
+#     plot = ggplot(df, aes(x = LPD, y = DI)) + geom_bin_2d(breaks=list(x = seq(-0.5,max(df$LPD)+1,1), y = seq(0, ceiling(max(df$DI)), 0.01))) + scale_fill_viridis(option ="H") + geom_hline(aes(yintercept = thres, linetype = "AOA_threshold")) + scale_linetype_manual(name = "", values = c(AOA_threshold = "dashed"))
+#     plot = ggplotly(plot) %>% layout(legend = list(bgcolor = "rgba(0,0,0,0)", x = 0.95, xanchor = "right", y = 1, yanchor = "top")) %>% config(displayModeBar = FALSE)
+#   } else if (layer == "AOA_LPD") {
+#     dfAOA_LPD = data.frame(LPD = as.integer(terra::values(raster , na.rm = T)))
+#     dfAOA_LPD <- dfAOA_LPD %>% mutate(AOA = ifelse(LPD < k, 0, 1))
+#     plot = ggplot(dfAOA_LPD, aes(x = factor(AOA), fill = factor(after_stat(x)))) +
+#       geom_bar(show.legend = FALSE) +
+#       geom_text(
+#         aes(label=paste(after_stat(round(prop*100, 2)), " %"), group=1),
+#         stat='count',
+#         nudge_y=8000,
+#         show.legend = FALSE
+#       ) +
+#       scale_fill_manual(values = c("#fdb138", "#025196"))
+#     plot = plot + xlab("AOA")
+#     plot = hide_legend(ggplotly(plot, tooltip = c("count", "AOA")) %>% config(displayModeBar = FALSE))
+#   }
+#   return(plot)
+# }
