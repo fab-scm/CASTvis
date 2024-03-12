@@ -10,8 +10,6 @@ License: GPL (>= 2)
 URL: https://github.com/HannaMeyer/CAST,
     https://hannameyer.github.io/CAST/
 Encoding: UTF-8
-LazyData: false
 Depends: R (>= 4.1.0)
 Imports: terra, leaflet, shiny, shinyWidgets, shinycssloaders, bslib, rlist, sf, ggplot2, plotly, viridis
 RoxygenNote: 7.3.1
-VignetteBuilder: knitr
