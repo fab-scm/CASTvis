@@ -24,6 +24,8 @@
 #' The fourth layer is based on the \code{LPD} layer and can be seen as a \code{neighbor-dependet AOA}. This layer extends the \code{AOA}
 #' by a minimum number k of training data points for which the threshold condition must hold in order to be classified as \code{Indside AOA (1)}.
 #'
+#' @import terra leaflet shiny shinyWidgets shinycssloaders bslib rlist sf ggplot2 plotly viridis
+#'
 #' @author
 #' Fabian Schumacher
 #' @references Meyer, H., Pebesma, E. (2021): Predicting into unknown space?
