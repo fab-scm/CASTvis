@@ -187,14 +187,7 @@ exploreAOA <- function(aoa) {
   ymax <- as.numeric(extent[4])
 
 
-  # define marker icon _________________________________________________________
-  xmark <-
-    makeIcon(
-      system.file("images", "xmark.png", package = "CAST"),
-      iconWidth = 18,
-      iconHeight = 18
-    )
-
+  # define themes ______________________________________________________________
   light <- bs_theme(bootswatch = "yeti")
   dark <- bs_theme(bootswatch = "yeti", bg = "#333", fg = "#fff")
 
@@ -469,12 +462,11 @@ exploreAOA <- function(aoa) {
       lat <- click$lat
 
       leafletProxy("map") %>%
-        removeMarker(layerId = c("xmark")) %>%
+        removeMarker(layerId = c("marker")) %>%
         addMarkers(
-          layerId = "xmark",
+          layerId = "marker",
           lng = lng,
-          lat = lat,
-          icon = xmark
+          lat = lat
         )
     })
 
