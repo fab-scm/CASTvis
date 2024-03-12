@@ -260,8 +260,8 @@ exploreAOA <- function(aoa) {
                       height = "100vh"),
         conditionalPanel(condition = "output.showPanel == 'clicked'",
                          absolutePanel(
-                           bottom = 40,
-                           left = 10,
+                           top = 100,
+                           right = 10,
                            width = 170,
                            draggable = TRUE,
                            card(card_header("Pixel values"),card_body(tableOutput("pixelValues"), padding = "4px"))
