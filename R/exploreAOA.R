@@ -361,8 +361,8 @@ exploreAOA <- function(aoa) {
       map = NULL,
       clickOccurred = "not clicked",
       AOA_LPD = rasterImages$AOA_LPD,
-      plot1 = NULL,
-      plot2 = NULL,
+      # plot1 = NULL,
+      # plot2 = NULL,
       uploadHappened = "no"
     )
 
@@ -477,42 +477,42 @@ exploreAOA <- function(aoa) {
       }
     })
 
-
-    # plot handling on input$layerSelect or input$k change _____________________
-    observe({
-      message("Rendndering plots...")
-      if (input$layerSelect == "AOA_LPD"){
-        rv$plot1 <- generatePlot1(rasterImages$LPD, "AOA_LPD", input$k)
-        rv$plot2 <- generatePlot2(rasterImages$LPD, "AOA_LPD", input$k)
-      } else {
-        rv$plot1 <- plots1[[input$layerSelect]]$plot
-        rv$plot2 <- plots2[[input$layerSelect]]$plot
-      }
-    })
-
-    output$plot1 <- renderPlotly({
-      rv$plot1
-    })
-
-    output$plot2 <- renderPlotly({
-      rv$plot2
-    })
-
-    output$plot1title <- renderText({
-      plots1[[input$layerSelect]]$title
-    })
-
-    output$plot2title <- renderText({
-      plots2[[input$layerSelect]]$title
-    })
-
-    output$plot1description <- renderText({
-      plots1[[input$layerSelect]]$description
-    })
-
-    output$plot2description <- renderText({
-      plots2[[input$layerSelect]]$description
-    })
+#
+#     # plot handling on input$layerSelect or input$k change _____________________
+#     observe({
+#       message("Rendndering plots...")
+#       if (input$layerSelect == "AOA_LPD"){
+#         rv$plot1 <- generatePlot1(rasterImages$LPD, "AOA_LPD", input$k)
+#         rv$plot2 <- generatePlot2(rasterImages$LPD, "AOA_LPD", input$k)
+#       } else {
+#         rv$plot1 <- plots1[[input$layerSelect]]$plot
+#         rv$plot2 <- plots2[[input$layerSelect]]$plot
+#       }
+#     })
+#
+#     output$plot1 <- renderPlotly({
+#       rv$plot1
+#     })
+#
+#     output$plot2 <- renderPlotly({
+#       rv$plot2
+#     })
+#
+#     output$plot1title <- renderText({
+#       plots1[[input$layerSelect]]$title
+#     })
+#
+#     output$plot2title <- renderText({
+#       plots2[[input$layerSelect]]$title
+#     })
+#
+#     output$plot1description <- renderText({
+#       plots1[[input$layerSelect]]$description
+#     })
+#
+#     output$plot2description <- renderText({
+#       plots2[[input$layerSelect]]$description
+#     })
 
 
     # handling of training location upload _____________________________________
