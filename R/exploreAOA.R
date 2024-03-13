@@ -80,6 +80,12 @@ exploreAOA <- function(aoa) {
     layerNames <- c("AOA", "DI")
   }
 
+  # define indices matrix ______________________________________________________
+  indices_available <- "indices" %in% names(aoa)
+  if (indices_available) {
+    indices <- aoa$indices
+  }
+
   # define legend props for the AOA, DI and LPD ________________________________
   legendProperties <- list(
     AOA = list(
@@ -290,6 +296,8 @@ exploreAOA <- function(aoa) {
       map = NULL,
       clickOccurred = "not clicked",
       AOA_LPD = rasterImages$AOA_LPD,
+      trainLocations = NULL,
+      index_values = NULL,
       # plot1 = NULL,
       # plot2 = NULL,
       uploadHappened = "no"
@@ -406,7 +414,6 @@ exploreAOA <- function(aoa) {
       }
     })
 
-
     # handling of training location upload _____________________________________
     observeEvent(input$trainLocations, {
       rv$uploadHappened <- "yes"
@@ -421,13 +428,15 @@ exploreAOA <- function(aoa) {
     observeEvent(input$showTrainDat, {
       if (input$showTrainDat == TRUE && rv$uploadHappened == "yes") {
         # Read the uploaded GeoJSON/GeoPackage file
-        trainLocations <- st_read(input$trainLocations$datapath)
-        trainLocations <- as_Spatial(trainLocations)
+        print(input$trainLocations)
+        rv$trainLocations <- st_read(input$trainLocations$datapath)
+        # trainLocations <- as_Spatial(trainLocations)
+        print(rv$trainLocations)
 
         # Add the GeoJSON data to the Leaflet map
         leafletProxy("map") %>%
           addCircleMarkers(
-            data = trainLocations,
+            data = rv$trainLocations,
             group = "trainLocations",
             color = "#ff3535",
             stroke = TRUE,
@@ -438,7 +447,7 @@ exploreAOA <- function(aoa) {
       } else if (input$showTrainDat == FALSE &&
                  rv$uploadHappened == "yes") {
         leafletProxy("map") %>%
-          clearGroup(group = "trainLocations")
+          clearGroup(group = c("trainLocations", "indexSamples"))
       }
     })
 
@@ -468,6 +477,27 @@ exploreAOA <- function(aoa) {
           lng = lng,
           lat = lat
         )
+
+        print(rv$trainLocations[rv$index_values,])
+    })
+
+    observeEvent(rv$index_values, {
+      if (!is.na(rv$index_values[1]) & rv$uploadHappened == "yes"){
+        leafletProxy("map") %>%
+          clearGroup(group = "indexSamples") %>%
+          addCircleMarkers(
+            data = rv$trainLocations[rv$index_values,],
+            group = "indexSamples",
+            color = "white",
+            stroke = TRUE,
+            fillColor = "white",
+            radius = 3,
+            fillOpacity = 10
+          )
+      } else {
+        leafletProxy("map") %>%
+          clearGroup(group = "indexSamples")
+      }
     })
 
     output$showPanel <- reactive({
@@ -491,11 +521,19 @@ exploreAOA <- function(aoa) {
       DI_value <- as.numeric(round(terra::extract(rasterImages$DI,
                                                   cbind(lng, lat)),2))
       if (LPD_available) {
-        LPD_value <- as.numeric(terra::extract(rasterImages$LPD,
-                                               cbind(lng, lat)))
+        LPD_value <- terra::extract(rasterImages$LPD, cbind(lng, lat), cell = T)
+        cell <- LPD_value$cell
+        LPD_value <- LPD_value$LPD
         AOA_LPD_value <- as.numeric(terra::extract(rv$AOA_LPD,
                                                    cbind(lng, lat)))
       }
+
+      if (indices_available) {
+        rv$index_values <- indices[cell,][1:LPD_value]
+        print(rv$index_values)
+      }
+
+
 
       values_df <- c(c(AOA_value), c(DI_value))
       if (LPD_available) {
@@ -504,6 +542,7 @@ exploreAOA <- function(aoa) {
       } else {
         rownames <- c("AOA", "DI")
       }
+
 
       # convert to df
       values_df <- data.frame(values_df)
