@@ -278,6 +278,7 @@ exploreAOA <- function(aoa) {
                          ))
       )
     ),
+    nav_panel(title = "Training data", icon = icon("table")),
     nav_spacer(),
     nav_item(tags$div(class = "nomargin", switchInput(inputId = "dark_mode", value = FALSE, label = icon("moon"), width = "auto", size = "small", inline = TRUE))),
     nav_menu(
@@ -439,16 +440,16 @@ exploreAOA <- function(aoa) {
           addCircleMarkers(
             data = rv$trainLocations,
             group = "trainLocations",
-            color = "#ff3535",
+            color = "transparent",
             stroke = TRUE,
-            fillColor = "white",
+            fillColor = "#ff3535",
             radius = 3,
             fillOpacity = 10
           )
       } else if (input$showTrainDat == FALSE &&
                  rv$uploadHappened == "yes") {
         leafletProxy("map") %>%
-          clearGroup(group = c("trainLocations", "indexSamples"))
+          clearGroup(group = c("trainLocations"))
       }
     })
 
@@ -487,7 +488,7 @@ exploreAOA <- function(aoa) {
           addCircleMarkers(
             data = rv$trainLocations[rv$index_values,],
             group = "indexSamples",
-            color = "white",
+            color = "transparent",
             stroke = TRUE,
             fillColor = "white",
             radius = 3,
