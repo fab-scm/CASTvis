@@ -255,7 +255,11 @@ exploreAOA <- function(aoa) {
           ),
           conditionalPanel(
             condition = "output.uploadHappened == 'yes'",
-            tags$div(class = "nomargin", checkboxInput("showTrainDat", "Show training locations"))
+            tags$div(class = "nomargin", checkboxInput("showTrainDat", "Show all training locations"))
+          ),
+          conditionalPanel(
+            condition = "output.uploadHappened == 'yes'",
+            tags$div(class = "nomargin", checkboxInput("showLPDtrainDat", "Highlight LPD-relevant training locations"))
           ),
           tags$hr(style = "border: 1px solid #ccc; width: 100%;"),
           tags$h5(style = "font-weight: bold;", "Model Props:"),
@@ -428,10 +432,7 @@ exploreAOA <- function(aoa) {
     observeEvent(input$showTrainDat, {
       if (input$showTrainDat == TRUE && rv$uploadHappened == "yes") {
         # Read the uploaded GeoJSON/GeoPackage file
-        print(input$trainLocations)
-        rv$trainLocations <- st_read(input$trainLocations$datapath)
-        # trainLocations <- as_Spatial(trainLocations)
-        print(rv$trainLocations)
+        rv$trainLocations <- st_read(input$trainLocations$datapath, quiet = T)
 
         # Add the GeoJSON data to the Leaflet map
         leafletProxy("map") %>%
@@ -477,12 +478,10 @@ exploreAOA <- function(aoa) {
           lng = lng,
           lat = lat
         )
-
-        print(rv$trainLocations[rv$index_values,])
     })
 
-    observeEvent(rv$index_values, {
-      if (!is.na(rv$index_values[1]) & rv$uploadHappened == "yes"){
+    observeEvent(c(rv$index_values, input$showLPDtrainDat), {
+      if (!is.na(rv$index_values[1]) && rv$uploadHappened == "yes" && input$showLPDtrainDat == TRUE){
         leafletProxy("map") %>%
           clearGroup(group = "indexSamples") %>%
           addCircleMarkers(
@@ -494,7 +493,8 @@ exploreAOA <- function(aoa) {
             radius = 3,
             fillOpacity = 10
           )
-      } else {
+      }
+      else {
         leafletProxy("map") %>%
           clearGroup(group = "indexSamples")
       }
@@ -530,7 +530,6 @@ exploreAOA <- function(aoa) {
 
       if (indices_available) {
         rv$index_values <- indices[cell,][1:LPD_value]
-        print(rv$index_values)
       }
 
 
